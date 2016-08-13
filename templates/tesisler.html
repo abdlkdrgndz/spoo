@@ -1,0 +1,321 @@
+{% load static from staticfiles %}
+{% include 'header.html' %}
+
+   <!--banner-->
+<div class="banner-top">
+	<div class="container">
+		<h3 >Tesisler</h3>
+		<h4><a>Size en yakın tesisleri görüntülemektesiniz.</a></h4>
+		<div class="clearfix"> </div>
+	</div>
+</div>
+
+	<!-- içerik -->
+		<div class="check-out">	 
+		<div class="container">	 
+	 <div class="spec ">
+				<h3>Tesisler</h3>
+					<div class="ser-t">
+						<b></b>
+						<span><i></i></span>
+						<b class="line"></b>
+					</div>
+			</div>
+				<script>$(document).ready(function(c) {
+					$('.close1').on('click', function(c){
+						$('.cross').fadeOut('slow', function(c){
+							$('.cross').remove();
+						});
+						});	  
+					});
+			   </script>
+			<script>$(document).ready(function(c) {
+					$('.close2').on('click', function(c){
+						$('.cross1').fadeOut('slow', function(c){
+							$('.cross1').remove();
+						});
+						});	  
+					});
+			   </script>	
+			   <script>$(document).ready(function(c) {
+					$('.close3').on('click', function(c){
+						$('.cross2').fadeOut('slow', function(c){
+							$('.cross2').remove();
+						});
+						});	  
+					});
+			   </script>	
+ <table class="table ">
+		  <tr>
+
+              <th class="t-head head-it ">Tesis Bilgileri</th>
+              <th class="t-head ">Branş</th>
+              <th class="t-head">Fiyat</th>
+              <th class="t-head">Takım </th>
+              <th class="t-head">Rezervasyon</th>
+		  </tr>
+     {% if arananlar %}
+
+         {% for deger in arananlar %}
+
+             <form action="{% url 'rez_talep' %}" method="POST">
+                 {% csrf_token %}
+		  <tr class="cross">
+
+			<td class="ring-in t-data">
+				<a class="at-in thumbnail" data-toggle="modal" data-target="#myModal">
+					<img src="{% static 'images/branslar/tennis.png' %}" class="img-responsive" >
+				</a>
+			<div class="sed">
+				<h5 id="i_adi">{{ deger.isletme_adi }}</h5>
+                <p> <span class="glyphicon glyphicon-earphone"></span> {{ deger.isletme_sahip_telefon }}</p>
+                <p><span class="fa fa-comment fa-2x"></span> <span class="fa fa-heart fa-2x"></span>  <span class="fa fa-android fa-2x"></span></p>
+			</div>
+				<div class="clearfix"> </div>
+				<div class="close1"> </div>
+			 </td>
+              <td class="t-data">
+                  <select name="branslar" class="form-control">
+                    {% for foo in deger.bransucretleri_set.all %}
+                              <option> {{ foo }} </option>
+                    {% endfor %}
+                  </select>
+              </td>
+			<td class="t-data " > <span class="bedel">
+             {% for foo in deger.bransucretleri_set.all %}
+                 {% if forloop.first %}
+                       {{ foo.brans_ucreti }}
+                {% endif %}
+
+             {% endfor %}
+            </span> <span class="sonuc"></span></td>
+			<td class="t-data"><div class="quantity"> 
+								<div class="quantity-select">            
+									<div class="entry value-minus">&nbsp;</div>
+										<div class="entry value"><span class="span-1" >1</span></div>
+									<div class="entry value-plus active">&nbsp;</div>
+								</div>
+							</div>
+
+
+			
+			</td>
+			<td class="t-data t-w3l">
+                <a class="add-1" ><span class="fa fa-check" title="Rezervasyon isteğini gönder"></span></a>
+                <a class="add-1"> <span class="fa fa-heart" title="Tesisi favorilerime ekle"></span></a>
+            </td>
+
+		  </tr>
+             </form>
+
+          {% endfor %}
+        {% endif %}
+         <!-- REZERVASYON TALEP GÖNDERME İŞLEMİNE İLİŞKİN-->
+
+                <script>
+                    $(function () {
+                        $(".fa-check").click(function () {
+                            var st_id = $("#st_id").val();
+							var token_ = '{{ csrf_token }}';
+
+
+                           		$.post("{% url 'rez_talep' %}", {"st_id":st_id, "csrfmiddlewaretoken" : token_  }
+},
+								function(cevap)
+								{
+								alert(cevap.sonuc);
+								},"json");
+
+
+                        })
+                    })
+
+
+
+                </script>
+
+            <!-- REZERVASYON ADEDİNE İLİŞKİN -->
+                <script>
+                    $(function () {
+                        $(".value-plus").click( function () {
+                            var adet = $(this).prev().html();
+                            var bedel = $(this).closest('td').prev('td').find("span").html();
+                            var ilk_bedel = bedel.replace(',','.');
+                            var sonuc = (ilk_bedel * adet);
+                            $(this).closest('td').prev('td').find(".sonuc").html('x '+ adet+'=' + sonuc+',00');
+
+                        })
+                        $(".value-minus").click( function () {
+                            var adet = $(this).next().html();
+                            var bedel = $(this).closest('td').prev('td').find("span").html();
+                            var ilk_bedel = bedel.replace(',','.');
+                            var sonuc = (ilk_bedel * adet);
+                            $(this).closest('td').prev('td').find(".sonuc").html('x '+ adet+'=' + sonuc+',00');
+
+                        })
+                    })
+                </script>
+
+	</table>
+
+            {% if tesis_yok %}
+            <div class="alert alert-danger">Bu alanda henüz tesis kaydına rastlanılamadı. </div>
+            {% endif %}
+
+		 </div>
+		 </div>
+
+
+<!-- tesis bilgileri MODAL başlangıç -->
+			<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content modal-info">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						</div>
+						<div class="modal-body modal-spa">
+								<div class="col-md-5 span-2">
+											<div class="item">
+												<img src="{% static 'images/of2.png' %}" class="img-responsive" alt="">
+											</div>
+								</div>
+								<div class="col-md-7 span-1 ">
+									<h3>Spor Tesisi</h3>
+									<p class="in-para"> There are many variations of passages of Lorem Ipsum.</p>
+									<div class="price_single">
+									  <span class="reducedfrom "><del>$2.00</del>$1.50</span>
+
+									 <div class="clearfix"></div>
+									</div>
+									<h4 class="quick">Quick Overview:</h4>
+									<p class="quick_desc"> Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum. Typi non habent claritatem insitam; es</p>
+									 <div class="add-to">
+										   <button class="btn btn-danger my-cart-btn my-cart-btn1 " data-id="1" data-name="Moong" data-summary="summary 1" data-price="1.50" data-quantity="1" data-image="{% static 'images/of5.png' %}">Add to Cart</button>
+										</div>
+								</div>
+								<div class="clearfix"> </div>
+							</div>
+						</div>
+					</div>
+				</div>
+<!-- tesis bilgileri MODAL bitiş -->
+
+
+
+
+	<!--quantity-->
+			<script>
+			$('.value-plus').on('click', function(){
+				var divUpd = $(this).parent().find('.value'), newVal = parseInt(divUpd.text(), 10)+1;
+				divUpd.text(newVal);
+			});
+
+			$('.value-minus').on('click', function(){
+				var divUpd = $(this).parent().find('.value'), newVal = parseInt(divUpd.text(), 10)-1;
+				if(newVal>=1) divUpd.text(newVal);
+			});
+			</script>
+			<!--quantity-->
+			
+
+<!--footer-->
+{% include 'footer.html' %}
+<!-- //footer-->
+
+
+
+<!-- smooth scrolling -->
+	<script type="text/javascript">
+		$(document).ready(function() {
+		/*
+			var defaults = {
+			containerID: 'toTop', // fading element id
+			containerHoverID: 'toTopHover', // fading element hover id
+			scrollSpeed: 1200,
+			easingType: 'linear' 
+			};
+		*/								
+		$().UItoTop({ easingType: 'easeOutQuart' });
+		});
+	</script>
+	<a href="#" id="toTop" style="display: block;"> <span id="toTopHover" style="opacity: 1;"> </span></a>
+<!-- //smooth scrolling -->
+<!-- for bootstrap working -->
+		<script src="js/bootstrap.js"></script>
+<!-- //for bootstrap working -->
+<script type='text/javascript' src="js/jquery.mycart.js"></script>
+  <script type="text/javascript">
+  $(function () {
+
+    var goToCartIcon = function($addTocartBtn){
+      var $cartIcon = $(".my-cart-icon");
+      var $image = $('<img width="30px" height="30px" src="' + $addTocartBtn.data("image") + '"/>').css({"position": "fixed", "z-index": "999"});
+      $addTocartBtn.prepend($image);
+      var position = $cartIcon.position();
+      $image.animate({
+        top: position.top,
+        left: position.left
+      }, 500 , "linear", function() {
+        $image.remove();
+      });
+    }
+
+    $('.my-cart-btn').myCart({
+      classCartIcon: 'my-cart-icon',
+      classCartBadge: 'my-cart-badge',
+      affixCartIcon: true,
+      checkoutCart: function(products) {
+        $.each(products, function(){
+          console.log(this);
+        });
+      },
+      clickOnAddToCart: function($addTocart){
+        goToCartIcon($addTocart);
+      },
+      getDiscountPrice: function(products) {
+        var total = 0;
+        $.each(products, function(){
+          total += this.quantity * this.price;
+        });
+        return total * 1;
+      }
+    });
+
+  });
+  </script>
+
+  <!-- tesis bilgileri başlangıç -->
+			<div class="modal fade" id="ModalIcerik" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content modal-info">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						</div>
+						<div class="modal-body modal-spa">
+								<div class="col-md-5 span-2">
+                                    <div class="item">
+                                        <img src="{% static 'images/of2.png' %}" class="img-responsive" alt="">
+                                    </div>
+								</div>
+								<div class="col-md-7 span-1 ">
+									<h3>Spor Tesisi</h3>
+									<p class="in-para"> Tesis hakkında kısa bilgi</p>
+									<div class="price_single">
+									  <span class="reducedfrom "><del>150,00 TL</del>130,00 TL</span>
+									 <div class="clearfix"></div>
+									</div>
+									<h4 class="quick">İletişim Bilgileri</h4>
+									<p class="quick_desc"> Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum. Typi non habent claritatem insitam; es</p>
+									 <div class="add-to">
+                                         <button class="btn btn-danger my-cart-btn my-cart-btn1 " data-id="1" data-name="Moong" data-summary="summary 1" data-price="1.50" data-quantity="1" data-image="{% static 'images/of5.png' %}">Add to Cart</button>
+                                     </div>
+								</div>
+								<div class="clearfix"> </div>
+							</div>
+						</div>
+					</div>
+				</div>
+<!-- tesis bilgileri bitiş -->
+
+</body>
+</html>

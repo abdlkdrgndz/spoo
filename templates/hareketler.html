@@ -1,0 +1,181 @@
+{% load static from staticfiles %}
+{% include 'header.html' %}
+
+   <!--banner-->
+<div class="banner-top">
+	<div class="container">
+		<h3 >Hareketler</h3>
+		<h4><a>Rezervasyon hareketlerinize ilişkin bilgileri görüntülemektesiniz.</a></h4>
+		<div class="clearfix"> </div>
+	</div>
+</div>
+
+	<!-- içerik -->
+		<div class="check-out">	 
+		<div class="container">	 
+	 <div class="spec ">
+				<h3>Hareketler</h3>
+					<div class="ser-t">
+						<b></b>
+						<span><i></i></span>
+						<b class="line"></b>
+					</div>
+			</div>
+				<script>$(document).ready(function(c) {
+					$('.close1').on('click', function(c){
+						$('.cross').fadeOut('slow', function(c){
+							$('.cross').remove();
+						});
+						});	  
+					});
+			   </script>
+			<script>$(document).ready(function(c) {
+					$('.close2').on('click', function(c){
+						$('.cross1').fadeOut('slow', function(c){
+							$('.cross1').remove();
+						});
+						});	  
+					});
+			   </script>	
+			   <script>$(document).ready(function(c) {
+					$('.close3').on('click', function(c){
+						$('.cross2').fadeOut('slow', function(c){
+							$('.cross2').remove();
+						});
+						});	  
+					});
+			   </script>	
+ <table class="table ">
+		  <tr>
+              <th class="t-head head-it ">Tesis Bilgileri</th>
+              <th class="t-head">Ödeme Bilgisi</th>
+              <th class="t-head">Tarih </th>
+              <th class="t-head">Rezervasyon Durumu</th>
+		  </tr>
+		  <tr class="cross">
+			<td class="ring-in t-data">
+				<a class="at-in" data-toggle="modal" data-target="#myModal">
+                    <img src="{% static 'images/branslar/football_k6zqgyw.png' %}" alt="" class="img-responsive">
+				</a>
+			<div class="sed">
+				<h5>Aslanlar Spor Kompleksi</h5>
+                <h6>Futbol</h6>
+                <p><span class="fa fa-comment"></span> <span class="fa fa-heart"></span>  <span class="fa fa-android"></span></p>
+			</div>
+
+				<!--<div class="close1 disabled"> <i class="fa fa-times " aria-hidden="true" ></i></div>-->
+			 </td>
+			<td class="t-data "><span class="glyphicon glyphicon-ok text-success"></span><span class="glyphicon glyphicon-minus text-info"></span>125,00 TL </td>
+			<td class="t-data">12/07/2016 18:30
+			</td>
+			<td class="t-data t-w3l">
+                <a class="add-1" href="#" ><span class="glyphicon glyphicon-log-out" title="Rezervasyonu iptal et"></span></a>
+            </td>
+			
+		  </tr>
+	</table>
+		 </div>
+		 </div>
+
+
+<!--footer-->
+{% include 'footer.html' %}
+<!-- //footer-->
+
+
+
+<!-- smooth scrolling -->
+	<script type="text/javascript">
+		$(document).ready(function() {
+		/*
+			var defaults = {
+			containerID: 'toTop', // fading element id
+			containerHoverID: 'toTopHover', // fading element hover id
+			scrollSpeed: 1200,
+			easingType: 'linear' 
+			};
+		*/								
+		$().UItoTop({ easingType: 'easeOutQuart' });
+		});
+	</script>
+	<a href="#" id="toTop" style="display: block;"> <span id="toTopHover" style="opacity: 1;"> </span></a>
+<!-- //smooth scrolling -->
+<!-- for bootstrap working -->
+		<script src="js/bootstrap.js"></script>
+<!-- //for bootstrap working -->
+<script type='text/javascript' src="js/jquery.mycart.js"></script>
+  <script type="text/javascript">
+  $(function () {
+
+    var goToCartIcon = function($addTocartBtn){
+      var $cartIcon = $(".my-cart-icon");
+      var $image = $('<img width="30px" height="30px" src="' + $addTocartBtn.data("image") + '"/>').css({"position": "fixed", "z-index": "999"});
+      $addTocartBtn.prepend($image);
+      var position = $cartIcon.position();
+      $image.animate({
+        top: position.top,
+        left: position.left
+      }, 500 , "linear", function() {
+        $image.remove();
+      });
+    }
+
+    $('.my-cart-btn').myCart({
+      classCartIcon: 'my-cart-icon',
+      classCartBadge: 'my-cart-badge',
+      affixCartIcon: true,
+      checkoutCart: function(products) {
+        $.each(products, function(){
+          console.log(this);
+        });
+      },
+      clickOnAddToCart: function($addTocart){
+        goToCartIcon($addTocart);
+      },
+      getDiscountPrice: function(products) {
+        var total = 0;
+        $.each(products, function(){
+          total += this.quantity * this.price;
+        });
+        return total * 1;
+      }
+    });
+
+  });
+  </script>
+
+  <!-- tesis bilgileri başlangıç -->
+			<div class="modal fade" id="ModalIcerik" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content modal-info">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						</div>
+						<div class="modal-body modal-spa">
+								<div class="col-md-5 span-2">
+                                    <div class="item">
+                                        <img src="{% static 'images/of2.png' %}" class="img-responsive" alt="">
+                                    </div>
+								</div>
+								<div class="col-md-7 span-1 ">
+									<h3>Spor Tesisi</h3>
+									<p class="in-para"> Tesis hakkında kısa bilgi</p>
+									<div class="price_single">
+									  <span class="reducedfrom "><del>150,00 TL</del>130,00 TL</span>
+									 <div class="clearfix"></div>
+									</div>
+									<h4 class="quick">İletişim Bilgileri</h4>
+									<p class="quick_desc"> Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum. Typi non habent claritatem insitam; es</p>
+									 <div class="add-to">
+                                         <button class="btn btn-danger my-cart-btn my-cart-btn1 " data-id="1" data-name="Moong" data-summary="summary 1" data-price="1.50" data-quantity="1" data-image="{% static 'images/of5.png' %}">Add to Cart</button>
+                                     </div>
+								</div>
+								<div class="clearfix"> </div>
+							</div>
+						</div>
+					</div>
+				</div>
+<!-- tesis bilgileri bitiş -->
+
+</body>
+</html>
